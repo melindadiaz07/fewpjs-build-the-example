@@ -4,7 +4,42 @@ const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
 
+const errorModal = document.querySelector('#modal')
+errorModal.className = 'hidden'
 
+document.addEventListener('DOMContentLoaded', 
+  likesButtonListener())
+
+  function likesButtonListener(){
+    const likeButtons = document.querySelectorAll(".like-glyph")
+    likeButtons.forEach(button => {
+      
+      button.addEventListener('click', event => increaseLikes(event))
+    })
+  }
+
+  function increaseLikes(event){
+    
+    mimicServerCall()
+    .then(() => {
+      let heartButton = event.target
+
+      heartButton.innerHTML == EMPTY_HEART ?
+      heartButton.innerHTML = FULL_HEART :
+      heartButton.innerHTML = EMPTY_HEART
+
+      heartButton.innerHTML == FULL_HEART ?
+      heartButton.className = 'activated-heart' :
+      heartButton.classList.remove('activated-heart')
+    })
+    .catch((error) => {
+      errorModal.classList.remove('hidden')
+      errorModal.innerHTML = error
+      setTimeout(() => {
+        errorModal.className = 'hidden'
+      }, 5000)
+    })
+  }
 
 
 //------------------------------------------------------------------------------
